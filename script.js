@@ -1,72 +1,86 @@
-let currentEnergy = 0;
-let currentMood = 0;
-let currentPrestige = 0;
-let currentSceneIndex = 0;
-let characterName = "";
-const scenes = [
-  { text: "Ti svegli al mattino. Che fai?",
+let currentRole = "";
+let energy = 100;
+let mood = 100;
+let prestige = 0;
+let currentStep = 0;
+
+const scenarios = [
+  {
+    text: "È il primo giorno di stagione. Il capo équipe vi convoca per preparare i campi sportivi e l’anfiteatro. Cosa fai?",
     choices: [
-      { text: "Doveri quotidiani", effects: { energy: -20, mood: -5, prestige: +10 } },
-      { text: "Pausa rilassante", effects: { energy: +10, mood: +10, prestige: -10 } }
+      { text: "Ti metti subito al lavoro con entusiasmo.", effects: { energy: -10, mood: +5, prestige: +10 } },
+      { text: "Fingi di darti da fare e ti nascondi dietro le quinte.", effects: { energy: -5, mood: -5, prestige: -15 } }
     ]
   },
-  { text: "Una signora chiede aiuto. Che fai?",
+  {
+    text: "Il capo équipe organizza una riunione serale. Sei stanco morto ma sai che è importante. Che fai?",
     choices: [
-      { text: "Aiutala", effects: { energy: -15, mood: +10, prestige: +15 } },
-      { text: "La ignori", effects: { energy: 0, mood: -5, prestige: -15 } }
+      { text: "Partecipi e prendi appunti.", effects: { energy: -15, mood: -5, prestige: +15 } },
+      { text: "Ti assenti e vai a dormire.", effects: { energy: +10, mood: +5, prestige: -20 } }
+    ]
+  },
+  {
+    text: "Durante il pranzo, siedi con gli ospiti. Una signora ti fa mille domande. Cosa fai?",
+    choices: [
+      { text: "Sorridi e rispondi con cortesia.", effects: { energy: -5, mood: +10, prestige: +10 } },
+      { text: "Le dici che hai fretta e vai via.", effects: { energy: 0, mood: -10, prestige: -10 } }
     ]
   }
 ];
-function updateStats() {
-  currentEnergy = Math.max(0, Math.min(100, currentEnergy));
-  currentMood = Math.max(0, Math.min(100, currentMood));
-  currentPrestige = Math.max(0, Math.min(100, currentPrestige));
-  document.getElementById('energyBar').style.width = currentEnergy + "%";
-  document.getElementById('moodBar').style.width = currentMood + "%";
-  document.getElementById('prestigeBar').style.width = currentPrestige + "%";
+
+function selectRole(role) {
+  currentRole = role;
+  document.getElementById('character-selection').style.display = 'none';
+  document.getElementById('gameplay').style.display = 'block';
+  document.getElementById('role').innerText = role;
+  showScenario();
 }
-function showScene() {
-  const scene = scenes[currentSceneIndex];
-  document.getElementById('sceneText').textContent = scene.text;
-  const choicesContainer = document.getElementById('choices');
-  choicesContainer.innerHTML = "";
-  scene.choices.forEach((choice, index) => {
-    const btn = document.createElement('button');
-    btn.textContent = choice.text;
-    btn.onclick = () => chooseOption(index);
-    choicesContainer.appendChild(btn);
+
+function showScenario() {
+  if (currentStep >= scenarios.length) {
+    endGame();
+    return;
+  }
+  const scenario = scenarios[currentStep];
+  document.getElementById('scenario').innerHTML = `<p>${scenario.text}</p>`;
+  const choicesDiv = document.getElementById('choices');
+  choicesDiv.innerHTML = "";
+  scenario.choices.forEach(choice => {
+    const btn = document.createElement("button");
+    btn.innerText = choice.text;
+    btn.onclick = () => {
+      applyEffects(choice.effects);
+      currentStep++;
+      showScenario();
+    };
+    choicesDiv.appendChild(btn);
   });
 }
+
 function applyEffects(effects) {
-  currentEnergy += effects.energy;
-  currentMood += effects.mood;
-  currentPrestige += effects.prestige;
+  energy += effects.energy;
+  mood += effects.mood;
+  prestige += effects.prestige;
   updateStats();
 }
-function chooseOption(index) {
-  applyEffects(scenes[currentSceneIndex].choices[index].effects);
-  currentSceneIndex++;
-  currentSceneIndex < scenes.length ? showScene() : endGame();
+
+function updateStats() {
+  document.getElementById('energy').innerText = energy;
+  document.getElementById('mood').innerText = mood;
+  document.getElementById('prestige').innerText = prestige;
 }
+
 function endGame() {
-  document.getElementById('gameScreen').style.display = "none";
-  document.getElementById('endScreen').style.display = "block";
-  let text = "";
-  text += currentPrestige >= 70 ? "Ammirato." : currentPrestige >= 40 ? "Rispetatto." : "Ignorato.";
-  text += currentEnergy >= 70 ? " Energico." : currentEnergy >= 30 ? " Stanco." : " Esausto.";
-  text += currentMood >= 70 ? " Felice." : currentMood >= 30 ? " Neutro." : " Depresso.";
-  text += "<br><br>Energia " + currentEnergy + ", Umore " + currentMood + ", Prestigio " + currentPrestige + ".";
-  document.getElementById('endMessage').innerHTML = text;
+  document.getElementById('gameplay').style.display = 'none';
+  document.getElementById('game-end').style.display = 'block';
+  let message = "Hai concluso il turno come " + currentRole + ".<br>";
+  message += "Energia: " + energy + "<br>";
+  message += "Umore: " + mood + "<br>";
+  message += "Prestigio: " + prestige + "<br>";
+  if (prestige >= 30) {
+    message += "<strong>Complimenti! Sei sulla buona strada per diventare capo équipe.</strong>";
+  } else {
+    message += "<strong>Dovrai impegnarti di più per farti notare.</strong>";
+  }
+  document.getElementById('final-message').innerHTML = message;
 }
-document.querySelectorAll('.charBtn').forEach(btn => {
-  btn.onclick = () => {
-    characterName = btn.dataset.name;
-    currentEnergy = parseInt(btn.dataset.energy);
-    currentMood = parseInt(btn.dataset.mood);
-    currentPrestige = parseInt(btn.dataset.prestige);
-    document.getElementById('charSelect').style.display = "none";
-    document.getElementById('gameScreen').style.display = "block";
-    updateStats(); currentSceneIndex = 0; showScene();
-  };
-});
-document.getElementById('restartBtn').onclick = () => location.reload();
