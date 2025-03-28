@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vita da Villaggio: Mini GDR</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="game">
+    <div id="charSelect">
+      <h2>Scegli il tuo personaggio</h2>
+      <div id="characters">
+        <button class="charBtn" data-name="Contadino" data-energy="80" data-mood="50" data-prestige="30">Contadino</button>
+        <button class="charBtn" data-name="Mercante" data-energy="50" data-mood="50" data-prestige="60">Mercante</button>
+      </div>
+    </div>
+
+    <div id="gameScreen" style="display: none;">
+      <div id="stats">
+        <div class="stat">
+          <span class="stat-label">Energia:</span>
+          <div class="stat-bar">
+            <div id="energyBar" class="stat-fill"></div>
+          </div>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Umore:</span>
+          <div class="stat-bar">
+            <div id="moodBar" class="stat-fill"></div>
+          </div>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Prestigio:</span>
+          <div class="stat-bar">
+            <div id="prestigeBar" class="stat-fill"></div>
+          </div>
+        </div>
+      </div>
+      <div id="sceneText"></div>
+      <div id="choices"></div>
+    </div>
+
+    <div id="endScreen" style="display: none;">
+      <h2>Fine del gioco</h2>
+      <div id="endMessage"></div>
+      <button id="restartBtn">Gioca di nuovo</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

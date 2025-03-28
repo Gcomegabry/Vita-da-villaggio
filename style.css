@@ -1,0 +1,100 @@
+body {
+  background: #fdfdfd;
+  color: #333;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 1em;
+}
+#game {
+  max-width: 500px;
+  margin: auto;
+}
+h2 {
+  margin: 0.5em 0;
+}
+button {
+  background: #eee;
+  border: 2px solid #555;
+  border-radius: 5px;
+}
+button:hover {
+  background: #ddd;
+}
+button:active {
+  background: #ccc;
+}
+#charSelect {
+  text-align: center;
+}
+#characters {
+  margin: 1em 0;
+}
+.charBtn {
+  display: block;
+  width: 80%;
+  max-width: 300px;
+  margin: 0.5em auto;
+  padding: 0.5em;
+  font-size: 1em;
+  text-align: left;
+  cursor: pointer;
+}
+#gameScreen {
+  text-align: left;
+}
+#sceneText {
+  margin: 1em 0;
+  font-size: 1.1em;
+}
+#choices button {
+  display: block;
+  width: 100%;
+  margin: 0.5em 0;
+  padding: 0.5em;
+  font-size: 1em;
+  cursor: pointer;
+}
+#stats {
+  margin: 1em 0;
+}
+.stat {
+  display: flex;
+  align-items: center;
+  margin: 0.5em 0;
+}
+.stat-label {
+  min-width: 80px;
+}
+.stat-bar {
+  flex: 1;
+  background: #ddd;
+  height: 15px;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.stat-fill {
+  height: 100%;
+  width: 0;
+  transition: width 0.5s;
+}
+#energyBar {
+  background: #4caf50;
+}
+#moodBar {
+  background: #2196F3;
+}
+#prestigeBar {
+  background: #9c27b0;
+}
+#endScreen {
+  text-align: center;
+}
+#endMessage {
+  margin: 1em 0;
+  font-size: 1.1em;
+}
+#restartBtn {
+  padding: 0.5em 1em;
+  font-size: 1em;
+  cursor: pointer;
+}
