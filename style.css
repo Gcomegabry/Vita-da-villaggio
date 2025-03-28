@@ -3,45 +3,40 @@ body {
   background: #f4f8fb;
   margin: 0;
   padding: 0;
+  text-align: center;
 }
-#game-container {
+#splash-screen {
+  background: white;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+#logo {
+  max-width: 300px;
+  margin-bottom: 30px;
+}
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  margin: 10px;
+  border: none;
+  background-color: #1b5299;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+button:hover {
+  background-color: #14427d;
+}
+#character-creation, #intro-story, #gameplay {
   max-width: 700px;
   margin: auto;
   padding: 20px;
 }
-header {
-  text-align: center;
-  background-color: #1b5299;
-  color: white;
-  padding: 20px;
-  border-radius: 8px;
-}
-h1 {
-  margin-top: 0;
-}
-#character-selection, #gameplay, #game-end {
-  margin-top: 20px;
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
-}
-button {
-  margin: 10px 5px;
-  padding: 10px 20px;
+input, select {
+  padding: 8px;
   font-size: 16px;
-  border-radius: 6px;
-  border: none;
-  background-color: #1b5299;
-  color: white;
-  cursor: pointer;
-}
-button:hover {
-  background-color: #163f73;
-}
-#stats {
-  background-color: #e7eff8;
-  padding: 10px;
-  border-radius: 6px;
-  margin-bottom: 10px;
+  margin: 5px;
 }

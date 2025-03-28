@@ -1,86 +1,55 @@
-let currentRole = "";
-let energy = 100;
-let mood = 100;
-let prestige = 0;
-let currentStep = 0;
+let player = {
+  name: "",
+  gender: "",
+  role: ""
+};
 
-const scenarios = [
-  {
-    text: "È il primo giorno di stagione. Il capo équipe vi convoca per preparare i campi sportivi e l’anfiteatro. Cosa fai?",
-    choices: [
-      { text: "Ti metti subito al lavoro con entusiasmo.", effects: { energy: -10, mood: +5, prestige: +10 } },
-      { text: "Fingi di darti da fare e ti nascondi dietro le quinte.", effects: { energy: -5, mood: -5, prestige: -15 } }
-    ]
-  },
-  {
-    text: "Il capo équipe organizza una riunione serale. Sei stanco morto ma sai che è importante. Che fai?",
-    choices: [
-      { text: "Partecipi e prendi appunti.", effects: { energy: -15, mood: -5, prestige: +15 } },
-      { text: "Ti assenti e vai a dormire.", effects: { energy: +10, mood: +5, prestige: -20 } }
-    ]
-  },
-  {
-    text: "Durante il pranzo, siedi con gli ospiti. Una signora ti fa mille domande. Cosa fai?",
-    choices: [
-      { text: "Sorridi e rispondi con cortesia.", effects: { energy: -5, mood: +10, prestige: +10 } },
-      { text: "Le dici che hai fretta e vai via.", effects: { energy: 0, mood: -10, prestige: -10 } }
-    ]
-  }
-];
-
-function selectRole(role) {
-  currentRole = role;
-  document.getElementById('character-selection').style.display = 'none';
-  document.getElementById('gameplay').style.display = 'block';
-  document.getElementById('role').innerText = role;
-  showScenario();
+function startGame() {
+  document.getElementById("splash-screen").style.display = "none";
+  document.getElementById("character-creation").style.display = "block";
 }
 
-function showScenario() {
-  if (currentStep >= scenarios.length) {
-    endGame();
+function confirmCharacter() {
+  const name = document.getElementById("playerName").value;
+  const gender = document.getElementById("playerGender").value;
+  const role = document.getElementById("playerRole").value;
+
+  if (!name.trim()) {
+    alert("Inserisci il tuo nome per proseguire.");
     return;
   }
-  const scenario = scenarios[currentStep];
-  document.getElementById('scenario').innerHTML = `<p>${scenario.text}</p>`;
-  const choicesDiv = document.getElementById('choices');
-  choicesDiv.innerHTML = "";
-  scenario.choices.forEach(choice => {
+
+  player.name = name;
+  player.gender = gender;
+  player.role = role;
+
+  document.getElementById("character-creation").style.display = "none";
+  document.getElementById("intro-story").style.display = "block";
+
+  const story = `
+    <h2>Ciao ${player.name}, benvenut${player.gender === 'Donna' ? 'a' : 'o'} a Saméria!</h2>
+    <p>Sei appena arrivat${player.gender === 'Donna' ? 'a' : 'o'} nel villaggio turistico dove lavorerai tutta l’estate come <strong>${player.role}</strong>.</p>
+    <p>La struttura si affaccia su una splendida spiaggia del sud Italia. Le camere sono piene di famiglie, coppie e gruppi in vacanza. L’équipe è composta da altri animatori come te, ognuno con il suo carattere, la sua esperienza e i suoi problemi.</p>
+    <p>Dovrai affrontare missioni quotidiane, gestire gli imprevisti, fare amicizia (o discutere) con colleghi, conquistare il pubblico durante gli spettacoli serali e – se ti farai notare – scalare i ranghi fino a diventare Capo Équipe.</p>
+    <p>Inizia la tua avventura e preparati a vivere un’estate indimenticabile!</p>
+  `;
+  document.getElementById("story-text").innerHTML = story;
+}
+
+function beginAdventure() {
+  document.getElementById("intro-story").style.display = "none";
+  document.getElementById("gameplay").style.display = "block";
+  document.getElementById("statName").innerText = player.name;
+  document.getElementById("statRole").innerText = player.role;
+  document.getElementById("statGender").innerText = player.gender;
+
+  document.getElementById("sceneText").innerText = "Appena svegliat* nel tuo alloggio condiviso, senti bussare alla porta. È il Capo Équipe che vi chiama per l'accoglienza dei nuovi ospiti. Cosa fai?";
+  const choices = document.getElementById("choices");
+  choices.innerHTML = "";
+  ["Ti prepari e scendi sorridente", "Fai finta di dormire", "Vai ma sei ancora in pigiama"].forEach((text) => {
     const btn = document.createElement("button");
-    btn.innerText = choice.text;
-    btn.onclick = () => {
-      applyEffects(choice.effects);
-      currentStep++;
-      showScenario();
-    };
-    choicesDiv.appendChild(btn);
+    btn.innerText = text;
+    btn.onclick = () => alert(`Hai scelto: ${text}`);
+    choices.appendChild(btn);
   });
-}
-
-function applyEffects(effects) {
-  energy += effects.energy;
-  mood += effects.mood;
-  prestige += effects.prestige;
-  updateStats();
-}
-
-function updateStats() {
-  document.getElementById('energy').innerText = energy;
-  document.getElementById('mood').innerText = mood;
-  document.getElementById('prestige').innerText = prestige;
-}
-
-function endGame() {
-  document.getElementById('gameplay').style.display = 'none';
-  document.getElementById('game-end').style.display = 'block';
-  let message = "Hai concluso il turno come " + currentRole + ".<br>";
-  message += "Energia: " + energy + "<br>";
-  message += "Umore: " + mood + "<br>";
-  message += "Prestigio: " + prestige + "<br>";
-  if (prestige >= 30) {
-    message += "<strong>Complimenti! Sei sulla buona strada per diventare capo équipe.</strong>";
-  } else {
-    message += "<strong>Dovrai impegnarti di più per farti notare.</strong>";
-  }
-  document.getElementById('final-message').innerHTML = message;
 }

@@ -1,41 +1,50 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Saméria RPG: Vita da Villaggio</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Saméria RPG - Vita da Villaggio</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div id="game-container">
-    <header>
-      <h1>Saméria RPG</h1>
-      <p>Il grande gioco di ruolo ambientato in un villaggio turistico</p>
-    </header>
-    <main id="game">
-      <section id="character-selection">
-        <h2>Scegli il tuo ruolo</h2>
-        <button onclick="selectRole('Mini Club')">Animatore Mini Club</button>
-        <button onclick="selectRole('Fitness')">Animatore Fitness</button>
-        <button onclick="selectRole('Torneista')">Animatore Torneista</button>
-      </section>
-      <section id="gameplay" style="display: none;">
-        <div id="stats">
-          <p><strong>Ruolo:</strong> <span id="role"></span></p>
-          <p><strong>Energia:</strong> <span id="energy">100</span></p>
-          <p><strong>Umore:</strong> <span id="mood">100</span></p>
-          <p><strong>Prestigio:</strong> <span id="prestige">0</span></p>
-        </div>
-        <div id="scenario"></div>
-        <div id="choices"></div>
-      </section>
-      <section id="game-end" style="display: none;">
-        <h2>Fine turno</h2>
-        <div id="final-message"></div>
-        <button onclick="location.reload()">Ricomincia</button>
-      </section>
-    </main>
+  <div id="splash-screen">
+    <img src="Risorsa 7s.jpeg" alt="Saméria Logo" id="logo">
+    <button onclick="startGame()">Inizia il gioco</button>
   </div>
-  <script src="script.js" defer></script>
+
+  <div id="character-creation" style="display:none;">
+    <h2>Benvenuto in Saméria</h2>
+    <label for="playerName">Il tuo nome:</label>
+    <input type="text" id="playerName" placeholder="Inserisci il tuo nome">
+    <label>Genere:</label>
+    <select id="playerGender">
+      <option value="Uomo">Uomo</option>
+      <option value="Donna">Donna</option>
+    </select>
+    <label>Ruolo:</label>
+    <select id="playerRole">
+      <option value="Mini Club">Animatore Mini Club</option>
+      <option value="Fitness">Animatore Fitness</option>
+      <option value="Torneista">Animatore Torneista</option>
+    </select>
+    <button onclick="confirmCharacter()">Conferma</button>
+  </div>
+
+  <div id="intro-story" style="display:none;">
+    <div id="story-text"></div>
+    <button onclick="beginAdventure()">Inizia l'avventura</button>
+  </div>
+
+  <div id="gameplay" style="display:none;">
+    <div id="playerStats">
+      <p><strong>Nome:</strong> <span id="statName"></span></p>
+      <p><strong>Ruolo:</strong> <span id="statRole"></span></p>
+      <p><strong>Genere:</strong> <span id="statGender"></span></p>
+    </div>
+    <div id="sceneText"></div>
+    <div id="choices"></div>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
